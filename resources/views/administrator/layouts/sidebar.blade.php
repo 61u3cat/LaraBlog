@@ -13,26 +13,70 @@
                 <img src="{{asset('assets/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                @if(Auth::check())
+                <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+                @else
+                <a href="#" class="d-block">Guest</a>
+                @endif
             </div>
+            @if(Auth::check())
+            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+            @endif
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
+                <!-- Posts Section -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ request()->routeIs('editor.view') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Tables
+                            Posts
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('lists') }}" class="nav-link active">
+                            <a href="{{ route('editor.view') }}" class="nav-link {{ request()->routeIs('editor.view') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>DataTables</p>
+                                <p>Create Posts</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('category.view') }}" class="nav-link {{ request()->routeIs('category.view') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add category</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Lists Section -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ request()->routeIs('lists') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>
+                            Lists
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('lists') }}" class="nav-link {{ request()->routeIs('lists') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Users</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('lists') }}" class="nav-link {{ request()->routeIs('lists') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Posts</p>
                             </a>
                         </li>
                     </ul>

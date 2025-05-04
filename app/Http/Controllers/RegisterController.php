@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -38,9 +38,9 @@ class RegisterController extends Controller
         ]);
         if (Auth::attempt($data)) {
             $request->session()->regenerate();
-            return redirect('administrator.lists');
+            return redirect('lists');
         } else {
-            return 'invalid';
+            return redirect('login')->with('invalid','Password and email doent match');
         }
     }
     public function dataview()
@@ -72,4 +72,20 @@ class RegisterController extends Controller
 
         return redirect()->route('lists')->with('success', 'User updated successfully.');
     }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
+        return redirect()->route('login.view')->with('Success', 'Logged out successfully');
+    }
+    public function forgotPassword()
+    {
+        return view('administrator.forgot-password');
+    }
+    public function recoverPassword()
+    {
+        return view('administrator.recover-password');
+    }
+  
 }
