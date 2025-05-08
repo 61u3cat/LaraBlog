@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('slug');
             $table->string('thumbnail');
             $table->text('editor');
+            $table->string('category_ids');            
             $table->timestamps();
         });
     }

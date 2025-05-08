@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlogCategory;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Support\Str;
@@ -19,9 +20,15 @@ class EditorController extends Controller
     {
         $data  = $request->validate([
             'title' => 'required',
+            'slug' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,png,gif,jpeg',
-            'editor' => 'required'
+            'editor' => 'required',
+            'category' => 'required|array',
+            'category.*' => 'required',
         ]);
+        unset($data['category']);
+
+        $data['slug'] = Str::slug($data['slug']);
 
         if ($request->hasFile('thumbnail')) {
             $file_name = time() . '-' . $request->file('thumbnail')->getClientOriginalName();
@@ -29,7 +36,14 @@ class EditorController extends Controller
             $data['thumbnail'] = $file_name;
         }
 
-        Post::create($data);
+        $post = Post::create($data);
+        foreach($request->category as $category){
+            BlogCategory::create(['post_id' => $post->id, 'category_id' => $category]);
+        }
+       
+
+        // $post  = Post::findOrFail($id);
+        $post->update($data);
         return redirect('editor')->with('success', 'succesfully uploaded');
     }
     public function category()
@@ -40,7 +54,7 @@ class EditorController extends Controller
     public function categorysave(Request $request)
     {
         $data  = $request->validate([
-            'category_name' => 'required',
+            'category_name' => 'required|unique:categories',
             'category_slug' => 'required'        
         ]);
 
@@ -48,5 +62,34 @@ class EditorController extends Controller
         Category::create($data);
         return redirect('category')->with('success', 'succesfully submitted');
     }
+   public function PostUpdateSave(Request $request, $id)
+   {
+        $data  = $request->validate([
+            'title' => 'required',
+            'slug' => 'required',
+            'thumbnail' => 'required|image|mimes:jpg,png,gif,jpeg',
+            'editor' => 'required',
+            'category' => 'required|array',
+            'category.*' => 'required',
+        ]);
+        unset($data['category']);
+
+        $data['slug'] = Str::slug($data['slug']);
+
+        if ($request->hasFile('thumbnail')) {
+            $file_name = time() . '-' . $request->file('thumbnail')->getClientOriginalName();
+            $request->file('thumbnail')->move(public_path('uploads'), $file_name);
+            $data['thumbnail'] = $file_name;
+        }
+
+        $post = Post::where('id', $id)->update($data);
+        foreach($request->category as $category){
+            $check = BlogCategory::where(['post_id' => $id, 'category_id' => $category])->first();
+            if(!$check){
+                BlogCategory::create(['post_id' => $post->id, 'category_id' => $category]);
+            }
+        }
+        return redirect()->route('posts')->with('success', 'succesfully uploaded');
+   }
 
 }

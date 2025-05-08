@@ -32,7 +32,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Posts Section -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link {{ request()->routeIs('editor.view') ? 'active' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs('editor.view') || request()->routeIs('category.view') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Posts
@@ -46,12 +46,10 @@
                                 <p>Create Posts</p>
                             </a>
                         </li>
-                    </ul>
-                    <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('category.view') }}" class="nav-link {{ request()->routeIs('category.view') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Add category</p>
+                                <p>Add Category</p>
                             </a>
                         </li>
                     </ul>
@@ -59,7 +57,7 @@
 
                 <!-- Lists Section -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link {{ request()->routeIs('lists') ? 'active' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs('lists') || request()->routeIs('posts') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-list"></i>
                         <p>
                             Lists
@@ -74,7 +72,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('lists') }}" class="nav-link {{ request()->routeIs('lists') ? 'active' : '' }}">
+                            <a href="{{ route('posts') }}" class="nav-link {{ request()->routeIs('posts') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Posts</p>
                             </a>

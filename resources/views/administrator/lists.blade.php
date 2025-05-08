@@ -53,13 +53,11 @@
                     <td>{{$user->email}}</td>
 
                     <td><a href="{{route('user.edit',$user->id)}}" class="btn btn-warning btn-sm">Update</a>
-                    </td>
-                    <td>
-                      <form action="{{route('user.delete',$user->id)}}" method="post" style="display:inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                      </form>
+                    <form action="{{route('user.delete',$user->id)}}" method="post" style="display:inline-block;">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>                                        
                     </td>
                   </tr>
                   @endforeach

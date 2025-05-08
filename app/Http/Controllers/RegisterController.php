@@ -40,7 +40,7 @@ class RegisterController extends Controller
             $request->session()->regenerate();
             return redirect('lists');
         } else {
-            return redirect('login')->with('invalid','Password and email doent match');
+            return redirect('login')->with('invalid', 'Password and email doent match');
         }
     }
     public function dataview()
@@ -48,36 +48,13 @@ class RegisterController extends Controller
         $users = User::all();
         return view('administrator.lists', compact('users'));
     }
-    public function edit($id)
-    {
-        $user = User::findOrFail($id);
-        return view('administrator.edit', compact('user'));
-    }
-    public function delete($id)
-    {
-        $user = User::findOrFail($id);
-        $user->delete();
-        return redirect()->route('lists')->with('success', 'User deleted successfully.');
-    }
 
-    public function update(Request $request, $id)
-    {
-        $data = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
-        ]);
-
-        $user = User::findOrFail($id);
-        $user->update($data);
-
-        return redirect()->route('lists')->with('success', 'User updated successfully.');
-    }
     public function logout(Request $request)
     {
         Auth::logout();
         // $request->session()->invalidate();
         // $request->session()->regenerateToken();
-        return redirect()->route('login.view')->with('Success', 'Logged out successfully');
+        return redirect()->route('login')->with('Success', 'Logged out successfully');
     }
     public function forgotPassword()
     {
@@ -87,5 +64,4 @@ class RegisterController extends Controller
     {
         return view('administrator.recover-password');
     }
-  
 }
