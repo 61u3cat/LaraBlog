@@ -6,8 +6,15 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'home'])->name('index');
-//Route::get('/{slug}', [HomeController::class, 'home'])->name('blog-details');
+Route::get('/', [HomeController::class, 'home'])->name('LaraBlog.index');
+Route::get('/post/{slug}', [HomeController::class, 'showBlog'])->name('blog-details');
+Route::get('/category/{slug}', [HomeController::class, 'categoryPosts'])->name('category.posts');
+Route::get('/about', [HomeController::class, 'about'])->name('LaraBlog.about');
+Route::get('/home', [HomeController::class, 'homeIndex'])->name('LaraBlog.indexhome');
+Route::get('/contact', [HomeController::class, 'contact'])->name('LaraBlog.contact');
+
+
+
 
 
 Route::get('/register', [RegisterController::class, 'register'])->name('register.view');
@@ -39,5 +46,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/{id}/edit', [dashboardController::class, 'postedit'])->name('editpost');
     Route::post('/posts/{id}/edit', [EditorController::class, 'PostUpdateSave'])->name('editor.update');
     Route::post('/posts/{id}', [dashboardController::class, 'delete'])->name('post.delete');
-    Route::post('/logout', [dashboardController::class, 'logout'])->name('logout');
+    Route::post('/logout', [RegisterController::class, 'logout'])->name('logout');
 });

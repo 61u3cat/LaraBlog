@@ -74,10 +74,11 @@
                                                 <label class="input-group-text" for="inputGroupFile01">Thumbnail</label>
                                                 <input type="file" name="thumbnail" class="form-control"
                                                     id="inputGroupFile01" value="{{ $posts->thumbnail }}">
+                                                    <img class="img-fluid" src="{{ asset('uploads/'.$posts->thumbnail) }}" width="150px" height="150px">
                                             </div>
 
                                             <div class="mb-3">
-                                                <textarea name="editor" id="editor1"></textarea>
+                                                <textarea name="editor" id="editor1" value="">{{ $posts->editor }}</textarea>
                                             </div>
                                             {{-- @php $cats = [] @endphp
                                             @foreach ($categories as $key => $category)

@@ -3,7 +3,7 @@
         <div class="row gy-4">
             <div class="col-lg-4 col-md-6 footer-about">
                 <a href="{{ url('/') }}" class="logo d-flex align-items-center">
-                    <span class="sitename">ZenBlog</span>
+                    <span class="sitename">LaraBlog</span>
                 </a>
                 <div class="footer-contact pt-3">
                     <p>A108 Adam Street</p>
@@ -22,7 +22,7 @@
     </div>
 
     <div class="container copyright text-center mt-4">
-        <p>© Copyright <strong>ZenBlog</strong>. All Rights Reserved</p>
+        <p>© Copyright <strong>LaraBlog</strong>. All Rights Reserved</p>
         <div class="credits">
             Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
         </div>

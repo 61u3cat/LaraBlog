@@ -27,7 +27,7 @@ class EditorController extends Controller
             'category.*' => 'required',
         ]);
         unset($data['category']);
-
+        $data['user_id'] = auth()->user()->id;
         $data['slug'] = Str::slug($data['slug']);
 
         if ($request->hasFile('thumbnail')) {
@@ -37,10 +37,10 @@ class EditorController extends Controller
         }
 
         $post = Post::create($data);
-        foreach($request->category as $category){
+        foreach ($request->category as $category) {
             BlogCategory::create(['post_id' => $post->id, 'category_id' => $category]);
         }
-       
+
 
         // $post  = Post::findOrFail($id);
         $post->update($data);
@@ -55,19 +55,19 @@ class EditorController extends Controller
     {
         $data  = $request->validate([
             'category_name' => 'required|unique:categories',
-            'category_slug' => 'required'        
+            'category_slug' => 'required'
         ]);
 
         $data['category_slug'] = Str::slug($data['category_slug']);
         Category::create($data);
         return redirect('category')->with('success', 'succesfully submitted');
     }
-   public function PostUpdateSave(Request $request, $id)
-   {
+    public function PostUpdateSave(Request $request, $id)
+    {
         $data  = $request->validate([
             'title' => 'required',
             'slug' => 'required',
-            'thumbnail' => 'required|image|mimes:jpg,png,gif,jpeg',
+            'thumbnail' => 'nullable|image',
             'editor' => 'required',
             'category' => 'required|array',
             'category.*' => 'required',
@@ -82,14 +82,12 @@ class EditorController extends Controller
             $data['thumbnail'] = $file_name;
         }
 
-        $post = Post::where('id', $id)->update($data);
-        foreach($request->category as $category){
-            $check = BlogCategory::where(['post_id' => $id, 'category_id' => $category])->first();
-            if(!$check){
-                BlogCategory::create(['post_id' => $post->id, 'category_id' => $category]);
-            }
+        $post = Post::where(['user_id' => auth()->user()->id, 'id' => $id])->update($data);
+        $check = BlogCategory::where(['post_id' => $id])->delete(); //sotti
+        foreach ($request->category as $category) {
+            BlogCategory::create(['post_id' => $id, 'category_id' => $category]);
         }
-        return redirect()->route('posts')->with('success', 'succesfully uploaded');
-   }
 
+        return redirect()->route('posts')->with('success', 'succesfully uploaded');
+    }
 }

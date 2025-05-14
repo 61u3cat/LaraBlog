@@ -17,11 +17,11 @@ class dashboardController extends Controller
     }
     public function postview()
     {
-        $posts = Post::with('blogCategory.getCategoryName')->get();
+        $posts = Post::with('blogCategory.getCategoryName')->where(['user_id' => auth()->user()->id])->orderBy('id', 'DESC')->get();
 
-        return view('administrator.post',compact('posts'));
+        return view('administrator.post', compact('posts'));
     }
-   
+
     public function edit($id)
     {
         $user = User::findOrFail($id);
@@ -40,35 +40,35 @@ class dashboardController extends Controller
             'name' => 'required',
             'email' => 'required',
         ]);
-// if validate faild redirect not going down else success going down
+        // if validate faild redirect not going down else success going down
 
-// $data = [
-//     'name' => 'robi',
-//     'email' => 'touhgid123@Wgmail.com'
-// ];
+        // $data = [
+        //     'name' => 'robi',
+        //     'email' => 'touhgid123@Wgmail.com'
+        // ];
 
-// $user->name
+        // $user->name
 
-        if($request->password){
+        if ($request->password) {
             $request->validate([
                 'password' => 'required',
                 'confirm_password' => 'required|same:password',
             ]);
-// if validate faild redirect not going down
+            // if validate faild redirect not going down
 
 
             $data['password'] = Hash::make($request->password);
             // $data = [
-//     'name' => 'robi',
-//     'email' => 'touhgid123@Wgmail.com'
-//     'password' => 'sdo9fias9d0ifujas09d8fyhsad89fyhas9dfy89asdf8'
-// ];
+            //     'name' => 'robi',
+            //     'email' => 'touhgid123@Wgmail.com'
+            //     'password' => 'sdo9fias9d0ifujas09d8fyhsad89fyhas9dfy89asdf8'
+            // ];
         }
 
-// $data = [
-//     'name' => 'robi',
-//     'email' => 'touhgid123@Wgmail.com'
-// ];
+        // $data = [
+        //     'name' => 'robi',
+        //     'email' => 'touhgid123@Wgmail.com'
+        // ];
         $user = User::findOrFail($id);
         $user->update($data);
 
@@ -78,7 +78,7 @@ class dashboardController extends Controller
     }
     public function postedit($id)
     {
-        $posts = Post::with('blogCategory.getCategoryName')->where('id', $id)->first();
+        $posts = Post::with('blogCategory.getCategoryName')->where(['user_id' => auth()->user()->id, 'id' => $id])->firstOrFail();
         $categories = Category::all();
 
 
@@ -89,7 +89,6 @@ class dashboardController extends Controller
 
         //$posts->blogCategory[0]->category_id == 4
 
-        return view('administrator.editpost',compact('posts', 'categories', 'blogcategory'));
-        
+        return view('administrator.editpost', compact('posts', 'categories', 'blogcategory'));
     }
 }
