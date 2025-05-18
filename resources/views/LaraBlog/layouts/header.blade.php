@@ -52,9 +52,7 @@
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a href="{{ route('LaraBlog.index') }}" class="active">Home</a></li>
-                    <li><a href="{{ route('LaraBlog.about') }}"
-                            class="">About</a></li>
-                   {{-- // <li><a href="single-post.html">Single Post</a></li> --}}
+                    {{-- // <li><a href="single-post.html">Single Post</a></li> --}}
                     <li class="dropdown"><a href="#"><span>Categories</span> <i
                                 class="bi bi-chevron-down toggle-dropdown"></i></a>
                         <ul>
@@ -67,15 +65,18 @@
                         </ul>
                     </li>
                     <li><a href="{{ route('LaraBlog.contact') }}">Contact</a></li>
+                    <li><a href="{{ route('administrator.LaraBlog.write') }}" class="">Write a Blog</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
-            <div class="header-social-links">
-                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                <a href="https://www.facebook.com/abdullah.tuhin.92" class="facebook"><i class="bi bi-facebook"></i></a>
-                <a href="https://www.instagram.com/tuhinna__/" class="instagram"><i class="bi bi-instagram"></i></a>
-                <a href="https://www.linkedin.com/in/tuhin-abdullah-539823284/" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            <div class="header-search-button">
+
+                <form action="{{ route('blog.search') }}" method="GET" class="d-flex ms-3" style="max-width: 300px;">
+                    <input type="text" name="q" id="search" class="form-control me-2"
+                        placeholder="Search blogs or categories..." required>
+                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+                </form>
             </div>
 
         </div>

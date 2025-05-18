@@ -35,7 +35,7 @@
   <div class="register-box">
     <div class="card card-outline card-primary">
       <div class="card-header text-center">
-        <a href="" class="h1"><b>Admin</b>LTE</a>
+        <a href="" class="h1"><b>LaraBlog</b>Register</a>
       </div>
       <div class="card-body">
         <p class="login-box-msg">Register a new membership</p>
@@ -91,7 +91,7 @@
           </div>
         </form>
 
-        <div class="social-auth-links text-center">
+        {{-- <div class="social-auth-links text-center">
           <a href="#" class="btn btn-block btn-primary">
             <i class="fab fa-facebook mr-2"></i>
             Sign up using Facebook
@@ -100,9 +100,9 @@
             <i class="fab fa-google-plus mr-2"></i>
             Sign up using Google+
           </a>
-        </div>
+        </div> --}}
 
-        <a href="login.html" class="text-center">I already have a membership</a>
+        <a href="{{ route('login') }}" class="text-center">I already have a membership</a>
       </div>
       <!-- /.form-box -->
     </div><!-- /.card -->

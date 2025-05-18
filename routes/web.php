@@ -12,6 +12,8 @@ Route::get('/category/{slug}', [HomeController::class, 'categoryPosts'])->name('
 Route::get('/about', [HomeController::class, 'about'])->name('LaraBlog.about');
 Route::get('/home', [HomeController::class, 'homeIndex'])->name('LaraBlog.indexhome');
 Route::get('/contact', [HomeController::class, 'contact'])->name('LaraBlog.contact');
+Route::get('/writeblog', [HomeController::class, 'BlogWrite'])->name('administrator.LaraBlog.write');
+Route::get('/search', [HomeController::class, 'search'])->name('blog.search');
 
 
 
@@ -22,8 +24,15 @@ Route::post('/register', [RegisterController::class, 'regsave'])->name('register
 
 Route::get('login', [RegisterController::class, 'login'])->name('login');
 Route::post('login', [RegisterController::class, 'loginsave'])->name('login.save');
+
+
 Route::get('forgot_password', [RegisterController::class, 'forgotPassword'])->name('forgot.password');
-Route::get('recover_password', [RegisterController::class, 'recoverPassword'])->name('recover.password');
+Route::post('forgot_password', [RegisterController::class, 'forgotPasswordToken'])->name('forgot.token');
+
+
+Route::get('reset-password/{email}/{token}', [RegisterController::class, 'recoverPassword'])->name('reset-password');
+Route::post('reset-password/{email}/{token}', [RegisterController::class, 'recoverPasswordSave'])->name('reset-password.save');
+
 
 
 

@@ -25,9 +25,11 @@
       </div>
       <div class="card-body">
         <p class="login-box-msg">You are only one step a way from your new password, recover your password now.</p>
-        <form action="login.html" method="post">
+        
+        <form action="{{ route('reset-password.save', [$email, $token]) }}" method="post">
+          @csrf
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Password">
+            <input type="password" name="password" class="form-control" placeholder="Password">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -35,7 +37,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Confirm Password">
+            <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -51,7 +53,7 @@
         </form>
 
         <p class="mt-3 mb-1">
-          <a href="login.html">Login</a>
+          <a href="{{ route('login') }}">Login</a>
         </p>
       </div>
       <!-- /.login-card-body -->
@@ -66,5 +68,11 @@
   <!-- AdminLTE App -->
   <script src="../../dist/js/adminlte.min.js"></script>
 </body>
+
+{{-- Summary Table
+Step	User Action	Route/Controller/View	What Happens
+1	Submit email for reset	/forgot-token → forgotToken()	Token generated, email sent
+2	Click link in email	/recover-password/{email}/{token}	Show reset form
+3	Submit new password	/reset-password/{email}/{token}	Password updated, token deleted, redirect to login --}}
 
 </html>
