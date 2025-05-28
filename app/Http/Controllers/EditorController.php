@@ -16,36 +16,55 @@ class EditorController extends Controller
         $categories = Category::get();
         return view('administrator.editor', compact('categories'));
     }
-    public function postsave(Request $request)
-    {
-        $data  = $request->validate([
-            'title' => 'required',
-            'slug' => 'required',
-            'thumbnail' => 'required|image|mimes:jpg,png,gif,jpeg',
-            'editor' => 'required',
-            'category' => 'required|array',
-            'category.*' => 'required',
-        ]);
-        unset($data['category']);
-        $data['user_id'] = auth()->user()->id;
-        $data['slug'] = Str::slug($data['slug']);
+   public function postsave(Request $request)
+{
+    // Validate the incoming request data with specific rules
+    $data  = $request->validate([
+        'title' => 'required', // Title is required
+        'slug' => 'required', // Slug is required
+        'thumbnail' => 'required|image|mimes:jpg,png,gif,jpeg', // Thumbnail must be an image of specified types
+        'editor' => 'required', // Editor content is required
+        'category' => 'required|array', // Category must be an array and is required
+        'category.*' => 'required', // Each category item must be required
+    ]);
 
-        if ($request->hasFile('thumbnail')) {
-            $file_name = time() . '-' . $request->file('thumbnail')->getClientOriginalName();
-            $request->file('thumbnail')->move(public_path('uploads'), $file_name);
-            $data['thumbnail'] = $file_name;
-        }
+    // Remove the category key from the validated data since it's handled separately
+    unset($data['category']);
 
-        $post = Post::create($data);
-        foreach ($request->category as $category) {
-            BlogCategory::create(['post_id' => $post->id, 'category_id' => $category]);
-        }
+    // Attach the authenticated user's ID to the post data
+    $data['user_id'] = auth()->user()->id;
 
+    // Convert the slug into a URL-friendly format
+    $data['slug'] = Str::slug($data['slug']);
 
-        // $post  = Post::findOrFail($id);
-        $post->update($data);
-        return redirect('editor')->with('success', 'succesfully uploaded');
+    // Check if a thumbnail file is uploaded
+    if ($request->hasFile('thumbnail')) {
+        // Create a unique filename using the current timestamp and original name
+        $file_name = time() . '-' . $request->file('thumbnail')->getClientOriginalName();
+
+        // Move the uploaded file to the public 'uploads' directory
+        $request->file('thumbnail')->move(public_path('uploads'), $file_name);
+
+        // Store the filename in the post data
+        $data['thumbnail'] = $file_name;
     }
+
+    // Create a new post record in the database
+    $post = Post::create($data);
+
+    // Loop through each category selected and associate it with the post
+    foreach ($request->category as $category) {
+        BlogCategory::create(['post_id' => $post->id, 'category_id' => $category]);
+    }
+
+    // Update the post with the same data (This seems redundant and might be unnecessary)
+    // $post  = Post::findOrFail($id); // This line is commented out and may not be needed
+    $post->update($data);
+
+    // Redirect to the 'editor' page with a success message
+    return redirect('editor')->with('success', 'Successfully uploaded');
+}
+
     public function category()
     {
         $category = Category::all();
